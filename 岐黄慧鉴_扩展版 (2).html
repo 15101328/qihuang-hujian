@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>岐黄慧鉴 · 中医体质辨识与养生参考</title>
+<style>
+:root{--bg:#f7f3ea;--ink:#2c2a26;--pri:#3d6b52;--acc:#b0492e;--line:#e2d9c6;--card:#fff;--sec:#5b8c5a;--warn:#e74c3c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;font-size:15px}
+header{background:var(--pri);color:#fff;padding:14px 18px}
+header h1{font-size:21px;letter-spacing:3px}
+header p{font-size:12px;opacity:.85;margin-top:2px}
+nav{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+nav button{background:rgba(255,255,255,.16);border:0;color:#fff;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:14px}
+nav button.on{background:#fff;color:var(--pri);font-weight:700}
+main{max-width:880px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+.card h2{font-size:17px;color:var(--pri);border-left:4px solid var(--pri);padding-left:10px;margin-bottom:12px}
+.card h3{font-size:15px;margin:12px 0 6px;color:var(--acc)}
+.btn{background:var(--pri);color:#fff;border:0;padding:9px 22px;border-radius:8px;cursor:pointer;font-size:15px;margin:4px 4px 4px 0}
+.btn.sec{background:#fff;color:var(--pri);border:1px solid var(--pri)}
+.btn.warn{background:var(--acc)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.entry{display:flex;gap:14px;flex-wrap:wrap}
+.entry>div{flex:1;min-width:240px;border:1px solid var(--line);border-radius:12px;padding:16px;background:#fffdf8}
+.entry h3{margin:0 0 6px;color:var(--pri);font-size:16px}
+.entry p{font-size:13px;color:#6b6558;min-height:60px}
+.q{border-bottom:1px dashed var(--line);padding:10px 0}
+.qt{font-weight:600;margin-bottom:8px;font-size:16px}
+.op label{display:inline-block;margin:4px 12px 4px 0;font-size:14px;cursor:pointer;padding:4px 10px;border:1px solid var(--line);border-radius:16px}
+.op label:hover{background:#eef5f0}
+.op label.selected{background:var(--pri);color:#fff;border-color:var(--pri)}
+.grp{margin-bottom:14px}
+.grp>b{display:block;color:var(--pri);margin-bottom:6px}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:18px;padding:4px 12px;margin:3px;cursor:pointer;font-size:14px;background:#fff;user-select:none}
+.tag.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tag.danger{border-color:var(--acc);color:var(--acc)}
+.tag.danger.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.bar{background:#eee;border-radius:6px;height:16px;overflow:hidden;margin:3px 0 8px}
+.bar i{display:block;height:100%;background:var(--pri)}
+.row{display:flex;justify-content:space-between;font-size:14px}
+.warn{background:#fdecea;border:1px solid var(--acc);color:#8a2b16;border-radius:10px;padding:12px;margin-bottom:12px}
+.tip{background:#eef5f0;border:1px solid #cfe0d5;border-radius:10px;padding:12px;font-size:14px}
+.feedback{background:#fff8e1;border:1px solid #ffecb3;border-radius:10px;padding:14px;margin:12px 0}
+.feedback b{color:var(--acc)}
+.food-card{border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0;background:#fff}
+.food-card h4{color:var(--pri);margin-bottom:4px}
+.food-card .meta{font-size:12px;color:#888;margin-bottom:6px}
+.dish-card{border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0;background:#fff;cursor:pointer}
+.dish-card:hover{background:#f0f8f0}
+.dish-card h4{color:var(--acc);margin-bottom:4px}
+.dish-card .meta{font-size:12px;color:#888}
+.search-box{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:8px;font-size:15px;margin-bottom:12px;background:#fff}
+.search-box:focus{outline:none;border-color:var(--pri)}
+.breadcrumb{font-size:13px;color:#888;margin-bottom:12px}
+.breadcrumb span{cursor:pointer;color:var(--pri)}
+.breadcrumb span:hover{text-decoration:underline}
+.step{padding:8px 0 8px 20px;border-left:2px solid var(--line);margin:6px 0;position:relative}
+.step::before{content:attr(data-n);position:absolute;left:-12px;top:8px;background:var(--pri);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
+.small{font-size:12px;color:#8a8478}
+footer{text-align:center;font-size:12px;color:#8a8478;padding:18px;border-top:1px solid var(--line);margin-top:20px}
+#mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}
+#mask .card{max-width:520px;margin:0}
+.page-nav{display:flex;justify-content:space-between;margin-top:16px}
+#qCounter,#sympCounter{text-align:center;color:var(--pri);font-weight:600;margin-bottom:8px}
+#qFeedback{display:none}
+@media print{header,nav,.noprint,footer{display:none}body{background:#fff}.card{border:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>岐黄慧鉴</h1>
+  <p>中医体质辨识 · 证候倾向参考 · 药食同源饮食建议（健康科普，非医疗诊断）</p>
+  <nav>
+    <button data-v="home" class="on" onclick="go('home')">首页</button>
+    <button data-v="cons" onclick="go('cons')">体质辨识</button>
+    <button data-v="symp" onclick="go('symp')">症状自查</button>
+    <button data-v="foods" onclick="go('foods')">食材库</button>
+    <button data-v="dishes" onclick="go('dishes')">菜谱</button>
+    <button data-v="hist" onclick="go('hist')">历史记录</button>
+    <button data-v="about" onclick="go('about')">关于与依据</button>
+  </nav>
+</header>
+<main>
+
+<!-- ===== 首页 ===== -->
+<section id="v-home">
+  <div class="card">
+    <h2>欢迎使用岐黄慧鉴</h2>
+    <p>本系统基于中医体质分类标准与常见证候的辨证规律，帮助你了解自己的<b>体质倾向</b>与<b>可能的证候方向</b>，并给出日常饮食与起居参考。</p>
+  </div>
+  <div class="warn">
+    <b>使用前声明：</b>本系统为健康科普工具，<b>不能替代医师面诊</b>，不提供疾病诊断、不开具处方与用药剂量。若出现"症状自查"中"危险信号"里的任何情况，请立即就医或拨打120。
+  </div>
+  <div class="tip" style="margin-bottom:14px">
+    <b>隐私说明：</b>您的所有数据仅保存在本机浏览器中（localStorage），不会上传任何服务器。本系统代码开源，欢迎查阅与反馈。
+  </div>
+  <div class="entry">
+    <div>
+      <h3>① 体质辨识</h3>
+      <p>27条标准条目自评，约3分钟。得出九种体质转化分与主导体质，并给出宜食、忌食与起居建议。</p>
+      <button class="btn" onclick="go('cons')">开始测评</button>
+    </div>
+    <div>
+      <h3>② 症状自查</h3>
+      <p>一题一页，即时反馈。勾选近期不适表现，系统匹配常见证候倾向，并推荐对应食材与菜谱。</p>
+      <button class="btn" onclick="go('symp')">开始自查</button>
+    </div>
+    <div>
+      <h3>③ 食材库</h3>
+      <p>药食同源物质目录收录，查看每味食材的性味归经、功效宜忌，以及对应的家常菜谱。</p>
+      <button class="btn" onclick="go('foods')">浏览食材</button>
+    </div>
+    <div>
+      <h3>④ 菜谱</h3>
+      <p>按体质/症状/季节筛选养生菜谱，查看详细做法与配伍意义。点击食材可跳转查看详情。</p>
+      <button class="btn" onclick="go('dishes')">浏览菜谱</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 体质辨识（改进：一题一页） ===== -->
+<section id="v-cons" style="display:none">
+  <div id="consQuizArea">
+    <div class="card">
+      <h2>中医体质自评</h2>
+      <div id="qCounter"></div>
+      <div id="qContent"></div>
+      <div class="page-nav">
+        <button class="btn sec" id="consPrev" onclick="consPrev()">上一题</button>
+        <button class="btn" id="consNext" onclick="consNext()">下一题</button>
+      </div>
+    </div>
+  </div>
+  <div id="consResult"></div>
+</section>
+
+<!-- ===== 症状自查（改进：一题一页+即时反馈） ===== -->
+<section id="v-symp" style="display:none">
+  <!-- 危险信号区 -->
+  <div id="sympDangerArea" class="card">
+    <h2>危险信号（如有请立即就医）</h2>
+    <p class="small">以下情况不适用养生建议，勾选后系统将优先提示就医。</p>
+    <div id="rfbox"></div>
+    <button class="btn" onclick="startSympCategories()">确认无上述情况，开始自查</button>
+  </div>
+
+  <!-- 症状分类选择区（一分类一页） -->
+  <div id="sympCatArea" style="display:none">
+    <div class="card">
+      <h2 id="sympCatTitle">近期不适表现</h2>
+      <div id="sympCounter"></div>
+      <div id="sympCatContent"></div>
+      <div id="sympCatFeedback" class="feedback" style="display:none"></div>
+      <div class="page-nav">
+        <button class="btn sec" id="sympPrev" onclick="sympPrev()">上一组</button>
+        <button class="btn" id="sympNext" onclick="sympNext()">下一组</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自查结果区 -->
+  <div id="sympResultArea" style="display:none"></div>
+</section>
+
+<!-- ===== 食材库 ===== -->
+<section id="v-foods" style="display:none">
+  <div class="card">
+    <h2>药食同源食材库</h2>
+    <input type="text" class="search-box" id="foodSearch" placeholder="搜索食材名称、功效、适用症状..." oninput="filterFoods()">
+    <div id="foodList"></div>
+  </div>
+</section>
+
+<!-- ===== 食材详情 ===== -->
+<section id="v-food-detail" style="display:none">
+  <div class="breadcrumb"><span onclick="go('foods')">食材库</span> / <span id="fdBread"></span></div>
+  <div id="foodDetail"></div>
+</section>
+
+<!-- ===== 菜谱列表 ===== -->
+<section id="v-dishes" style="display:none">
+  <div class="card">
+    <h2>养生菜谱</h2>
+    <input type="text" class="search-box" id="dishSearch" placeholder="搜索菜名、食材、适用症状..." oninput="filterDishes()">
+    <div style="margin-bottom:12px">
+      <span class="tag" onclick="filterDishByType('all')">全部</span>
+      <span class="tag" onclick="filterDishByType('粥羹')">粥羹主食</span>
+      <span class="tag" onclick="filterDishByType('汤煲')">汤煲</span>
+      <span class="tag" onclick="filterDishByType('茶饮')">茶饮糖水</span>
+      <span class="tag" onclick="filterDishByType('小炒')">家常小炒</span>
+      <span class="tag" onclick="filterDishByType('蒸菜')">蒸菜</span>
+      <span class="tag" onclick="filterDishByType('凉菜')">凉菜</span>
+    </div>
+    <div id="dishList"></div>
+  </div>
+</section>
+
+<!-- ===== 菜谱详情 ===== -->
+<section id="v-dish-detail" style="display:none">
+  <div class="breadcrumb"><span onclick="go('dishes')">菜谱</span> / <span id="ddBread"></span></div>
+  <div id="dishDetail"></div>
+</section>
+
+<!-- ===== 历史记录 ===== -->
+<section id="v-hist" style="display:none">
+  <div class="card"><h2>历史记录</h2><div id="hlist"></div>
+  <button class="btn sec" onclick="localStorage.removeItem('qhhj');renderHist()">清空记录</button></div>
+</section>
+
+<!-- ===== 关于与依据 ===== -->
+<section id="v-about" style="display:none">
+  <div class="card"><h2>理论与数据来源</h2>
+    <ul>
+      <li><b>体质辨识</b>：条目结构参照《中医体质分类与判定》国家标准（九种体质、Likert五级计分、转化分公式），正式使用前已请专业教师对照标准原文核对措辞。</li>
+      <li><b>证候规则</b>：参考中医诊断学常见证候（脾气虚、脾阳虚、肾阳虚、肾阴虚、肝郁气滞、肝火上炎、痰湿内阻、湿热内蕴、血瘀内阻、气血两虚、肺阴虚、心脾两虚、风寒束表、风热犯表、食滞胃脘）的证候要素整理，为规则加权匹配，非机器学习模型。</li>
+      <li><b>饮食建议</b>：推荐食材取自国家卫生健康委公布的"按照传统既是食品又是中药材的物质目录"（药食同源目录），并标注适用与禁忌人群。</li>
+      <li><b>算法</b>：转化分 =（原始分 − 条目数）/（条目数 × 4）× 100；证候得分 = 命中次症权重和 ÷ 该证候全部次症权重和 × 100，且须命中至少1项主症。</li>
+    </ul>
+    <div class="tip" style="margin-top:12px">
+      <b>隐私政策：</b>本网站仅在首次使用时提示数据收集范围。您的测评与自查数据仅保存在本机浏览器中，不会上传服务器。本网站不收集个人身份信息。
+    </div>
+    <div class="tip" style="margin-top:8px">
+      <b>开源声明：</b>本系统代码开源，欢迎查阅、学习与反馈。内容仅供健康科普参考，不作为诊疗依据。
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer>
+  岐黄慧鉴 · 学生课程/竞赛作品 · 内容仅供健康科普参考，不作为诊疗依据<br>
+  本网站代码开源 · 数据仅存本地浏览器 · 不上传服务器
+</footer>
+
+<!-- 首次使用隐私弹窗 -->
+<div id="mask"><div class="card">
+  <h2>使用前请阅读</h2>
+  <p>本工具提供的是<b>中医体质与证候倾向的科普参考</b>，不能替代医生诊断与治疗，不提供处方和用药剂量。</p>
+  <p style="margin-top:8px"><b>隐私说明：</b>您填写的信息仅保存在<b>本机浏览器</b>中，不会上传服务器。本网站仅在首次使用时展示此提示，后续访问不再重复。</p>
+  <p style="margin-top:8px"><b>开源声明：</b>本系统代码开源，欢迎查阅与反馈。</p>
+  <button class="btn" style="margin-top:12px" onclick="document.getElementById('mask').style.display='none';localStorage.setItem('qhhj_ok','1')">我已了解并同意</button>
+</div></div>
+
+<script>
+/* ============ 基础工具 ============ */
+function go(v){
+  document.querySelectorAll('main>section').forEach(s=>s.style.display=s.id==='v-'+v?'block':'none');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  window.scrollTo(0,0);
+  if(v==='foods') renderFoods();
+  if(v==='dishes') renderDishes();
+  if(v==='symp') syncSympView();
+  if(v==='hist') renderHist();
+}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function tg(el){el.classList.toggle('on')}
+
+/* ============ 季节判断 ============ */
+function getSeason(){
+  const m=new Date().getMonth()+1;
+  if(m>=3&&m<=5) return 'spring';
+  if(m>=6&&m<=8) return 'summer';
+  if(m>=9&&m<=11) return 'autumn';
+  return 'winter';
+}
+function getSeasonTip(){
+  const s=getSeason();
+  const tips={
+    spring:'春季阳气升发，宜疏肝理气，少食酸涩，多食甘温以养脾气。注意防风保暖，"春捂秋冻"。',
+    summer:'夏季暑热当令，宜清热解暑、益气生津。贪凉饮冷易伤脾胃阳气，注意空调温度不宜过低。',
+    autumn:'秋季燥气当令，宜滋阴润燥、润肺生津。少食辛辣，多食银耳、梨、蜂蜜等润燥之品。',
+    winter:'冬季寒气主令，宜温补阳气、藏精固本。注意保暖防寒，可适当进补，但需因人而异。'
+  };
+  return tips[s]||'';
+}
+function getSeasonFoodTip(symptom){
+  // 根据症状+季节给个性化反馈
+  const s=getSeason();
+  const feedbacks={
+    spring:{
+      '咳嗽':'春季风邪当令，咳嗽多与风邪犯肺有关。注意防风保暖，可饮桑菊饮。',
+      '打喷嚏':'春季花粉较多，若反复打喷嚏、流清涕，需留意是否为过敏性鼻炎。',
+      '乏力':'春困属正常生理现象，建议适度运动升发阳气，饮食宜清淡甘温。'
+    },
+    summer:{
+      '咳嗽':'夏季咳嗽需留意是否为空调受凉所致，注意室内外温差不宜过大。',
+      '乏力':'夏季易耗气伤津，乏力多与暑热伤气有关，可饮绿豆汤、酸梅汤解暑益气。',
+      '腹泻':'夏季贪凉饮冷易伤脾胃，腹泻时宜温中健脾，少食生冷。'
+    },
+    autumn:{
+      '咳嗽':'秋季燥咳最常见，宜润肺止咳，可饮百合银耳羹、梨汤。',
+      '口干':'秋燥伤津，口干咽燥属正常季节性反应，多饮温水、食滋阴润燥之品。',
+      '皮肤干燥':'秋季气候干燥，皮肤保湿很重要，内可食银耳蜂蜜，外注意护肤。'
+    },
+    winter:{
+      '咳嗽':'冬季咳嗽多属风寒，注意保暖防寒，可饮姜枣茶温肺散寒。',
+      '怕冷':'冬季怕冷属正常生理反应，若夏季也怕冷则需留意阳虚体质。',
+      '乏力':'冬季阳气内藏，适度进补可改善乏力，但需根据体质选择温补或平补。'
+    }
+  };
+  if(feedbacks[s]&&feedbacks[s][symptom]) return feedbacks[s][symptom];
+  // 通用季节反馈
+  const generic={
+    spring:'天虽暖，早晚仍需注意添衣，春季宜养肝。',
+    summer:'天热注意防暑降温，但勿贪凉饮冷伤脾胃。',
+    autumn:'天凉加衣哦，秋燥宜润，多喝温水。',
+    winter:'天冷加衣哦，冬季宜温补，注意保暖防寒。'
+  };
+  return generic[s]||'注意根据季节变化调整起居饮食。';
+}
+
+/* ============ 体质数据 ============ */
+const C={P:['平和质','阴阳气血调和'],Q:['气虚质','元气不足易疲乏'],Y:['阳虚质','阳气不足怕寒冷'],N:['阴虚质','阴液亏少易燥热'],T:['痰湿质','痰湿凝聚体胖黏'],H:['湿热质','湿热内蕴口黏腻'],X:['血瘀质','血行不畅多瘀滞'],G:['气郁质','气机郁滞情志不畅'],B:['特禀质','先天特异易过敏']};
+const Q=[[1,'P','您精力充沛吗？',0],[2,'P','您能适应外界寒热气候的变化吗？',0],[3,'P','您睡眠良好、醒来精神吗？',0],
+[4,'Q','您容易疲乏、精神不振吗？',0],[5,'Q','您容易气短（说话费力、接不上气）吗？',0],[6,'Q','您稍微活动就出汗（自汗）吗？',0],
+[7,'Y','您比别人更怕冷吗？',0],[8,'Y','您手脚经常发凉吗？',0],[9,'Y','您喜欢热饮、吃凉的就胃部不适吗？',0],
+[10,'N','您手心脚心发热吗？',0],[11,'N','您口干燥、总想喝水吗？',0],[12,'N','您皮肤或口唇偏干燥吗？',0],
+[13,'T','您腹部肥满松软吗？',0],[14,'T','您面部油脂分泌较多吗？',0],[15,'T','您常感胸闷或痰多吗？',0],
+[16,'H','您口苦、口臭吗？',0],[17,'H','您大便黏滞不爽、容易粘马桶吗？',0],[18,'H','您面部或鼻部油腻、易生痤疮吗？',0],
+[19,'X','您面色偏晦暗或有色素沉着吗？',0],[20,'X','您身上有固定部位的疼痛吗？',0],[21,'X','您无明显原因出现瘀斑或瘀点吗？',0],
+[22,'G','您情绪低落、容易烦恼吗？',0],[23,'G','您容易紧张焦虑吗？',0],[24,'G','您多愁善感、容易受惊吓吗？',0],
+[25,'B','您容易患过敏性鼻炎、哮喘或荨麻疹吗？',0],[26,'B','您容易对药物、食物、花粉、气味过敏吗？',0],[27,'B','※您有遗传性疾病或明显家族遗传倾向吗？',0]];
+const LBL={1:'没有',2:'偶尔',3:'经常',4:'多数时候',5:'总是'};
+const CD={
+P:{y:'饮食多样、谷薯蔬果肉蛋奶均衡，定时定量',j:'少食过冷过热、过度油腻',l:'作息规律，每周3-5次中等强度运动（快走、太极、八段锦）',e:'保持心情舒畅，定期体检'},
+Q:{y:'山药、大枣、小米、南瓜、香菇、莲子、黄芪、党参（药食同源目录内）',j:'生冷瓜果、大量萝卜、浓茶',l:'避免过劳与久站久坐，宜缓和运动如八段锦、慢走',e:'减少过度思虑，保证午休'},
+Y:{y:'生姜、干姜、肉桂、花椒、核桃仁、桂圆、枸杞子、羊肉汤（普通食材）',j:'冰饮冷食、苦瓜、绿豆、生鱼片',l:'注意腰腹与足部保暖，睡前热水泡脚，避免熬夜',e:'多晒太阳，适度活动以助阳气'},
+N:{y:'枸杞子、桑椹、黑芝麻、银耳、百合、铁皮石斛、蜂蜜、雪梨',j:'辛辣煎炸、羊肉狗肉、烟酒、过量咖啡',l:'避免熬夜（23点前入睡），节制房事，宜静养类运动',e:'保持环境湿润，避免久处干燥环境'},
+T:{y:'薏苡仁、赤小豆、茯苓、白扁豆、陈皮、荷叶、冬瓜、白萝卜',j:'甜腻点心、油炸食品、奶油、酒精',l:'增加有氧运动出汗，控制体重，避免久坐',e:'保持环境通风干燥'},
+H:{y:'薏苡仁、赤小豆、蒲公英、淡竹叶、鱼腥草、绿豆、马齿苋',j:'烧烤辛辣、酒类、动物内脏、甜腻食物',l:'规律运动排汗，注意个人卫生与皮肤清洁',e:'情绪平稳，避免熬夜加重内热'},
+X:{y:'山楂、桃仁、玫瑰花（重瓣红玫瑰）、黑木耳、醋、洋葱',j:'高脂饮食、寒凉收涩之品、烟酒',l:'避免久坐久卧，适度活动促进循环，戒烟',e:'保持情绪舒畅，气行则血行'},
+G:{y:'佛手、香橼、陈皮、山楂、玫瑰花、薄荷、佛手瓜',j:'过量咖啡浓茶、酒精',l:'规律作息，培养兴趣爱好，通过运动与倾诉疏泄情绪',e:'多与亲友交流，避免长期独处压抑'},
+B:{y:'山药、大枣、蜂蜜（少量）、乌梅、枸杞子，饮食清淡易消化',j:'明确过敏原（如海鲜、坚果、芒果等）严格回避；慎食发物',l:'室内定期除螨除尘，换季注意防护，外出可戴口罩',e:'随身携带医生开具的抗过敏药物，定期随访'}};
+
+/* ============ 症状标签 ============ */
+const SYM={fa:'疲乏无力',qd:'气短懒言',wh:'畏寒怕冷',sz:'手足不温',fr:'发热',ef:'怕风',zh:'动则出汗',dh:'夜间盗汗',ch:'午后潮热',wx:'手足心发热',xt:'形体肥胖',xs:'形体消瘦',mb:'面色苍白',mh:'面色晦暗',mr:'面红目赤',jg:'皮肤干燥',fz:'眼睑或下肢浮肿',
+yun:'头晕',tt:'头痛',tz:'头重如裹',em:'耳鸣',tl:'听力减退',mg:'眼干涩',sm:'视物模糊',bs:'鼻塞',lq:'流清鼻涕',lh:'流黄鼻涕',yg:'咽干',yt:'咽痛',kk:'口苦',kg:'口干',ko:'口臭',kd:'口淡无味',tf:'脱发明显',
+xj:'心悸',xm:'胸闷',ks:'咳嗽',tk:'痰白清稀',th:'痰黄黏稠',qc:'气促喘憋',td:'痰多',sl:'失眠',dm:'多梦易醒',rs:'入睡困难',
+sy:'食欲减退',fz2:'食后腹胀',wz:'胃脘胀痛',wr:'胃中灼热',ee:'恶心',ot:'呕吐',aq:'频繁嗳气',db:'大便稀溏',dg:'大便干结',dn:'大便黏滞不爽',fx:'腹泻',bm:'便秘',al:'腹部冷痛',xw:'喜温喜按',
+xq:'小便清长',xh:'小便短黄',yy:'夜尿频繁',yx:'腰膝酸软',xy:'性欲减退',yj:'月经不调',tj:'痛经',bd:'白带量多',
+jt:'关节疼痛',jb:'肢体屈伸不利',js:'肌肉酸痛',mb2:'肢体麻木',cj:'小腿抽筋',gd:'固定部位刺痛',yb:'皮肤瘀斑瘀点',
+qd2:'情绪低落',fn:'烦躁易怒',jl:'焦虑紧张',jw:'健忘',
+s1:'舌淡胖有齿痕',s2:'舌红少苔',s3:'舌苔白腻',s4:'舌苔黄腻',s5:'舌质紫暗或有瘀点',s6:'舌淡苔白'};
+const GRP=[['全身与寒热',['fa','qd','wh','sz','fr','ef','zh','dh','ch','wx','xt','xs','mb','mh','mr','jg','fz']],
+['头面与五官',['yun','tt','tz','em','tl','mg','sm','bs','lq','lh','yg','yt','kk','kg','ko','kd','tf']],
+['心肺与睡眠',['xj','xm','ks','tk','th','qc','td','sl','dm','rs']],
+['消化与二便',['sy','fz2','wz','wr','ee','ot','aq','db','dg','dn','fx','bm','al','xw']],
+['泌尿与生殖',['xq','xh','yy','yx','xy','yj','tj','bd']],
+['肢体与经络',['jt','jb','js','mb2','cj','gd','yb']],
+['情志与记忆',['qd2','fn','jl','jw']],
+['舌象（可选）',['s1','s2','s3','s4','s5','s6']]];
+const RF=[['胸痛剧烈或有压榨感','可能为心源性疾病，请立即急诊'],['咯血或咳血','需尽快呼吸科就诊'],['意识模糊、抽搐','立即拨打120'],['持续高热超过3天','需查明感染等病因'],['突发剧烈头痛伴呕吐','警惕脑血管事件'],['一侧肢体无力、口角歪斜、言语不清','警惕脑卒中，立即急诊'],['安静状态下呼吸困难','需急诊评估'],['呕血或黑色柏油样便','警惕上消化道出血'],['不明原因明显消瘦','需完善检查排除器质性疾病'],['剧烈腹痛持续不缓解','需急诊排除急腹症']];
+
+/* ============ 证候规则 ============ */
+const SYND=[
+{n:'脾气虚证',m:['fa','sy'],s:[['qd',3],['fz2',3],['db',3],['mb',2],['jw',1],['zh',2],['xm',1],['s1',3],['s6',2]],f:'山药、大枣、小米、南瓜、莲子、芡实、黄芪、党参',a:'生冷瓜果、油腻甜食、浓茶',l:'三餐规律、细嚼慢咽，餐后缓行，避免过劳与久坐'},
+{n:'脾阳虚证（中焦虚寒）',m:['al'],s:[['wh',3],['sz',3],['db',3],['xw',3],['fz2',2],['kd',2],['fa',2],['s1',3],['s3',2]],f:'生姜、干姜、肉桂、花椒、山药、大枣、桂圆',a:'冰饮冷食、苦瓜、绿豆、生鱼片',l:'注意腹部保暖，可请专业人员指导艾灸中脘、足三里'},
+{n:'肾阳虚证',m:['yx'],s:[['wh',3],['sz',3],['yy',3],['xq',2],['xy',2],['fa',2],['mh',1],['cj',1],['tj',1],['s1',2]],f:'核桃仁、黑芝麻、枸杞子、肉苁蓉、杜仲叶、桂圆',a:'生冷寒凉、过量咖啡浓茶',l:'腰腹足部保暖，早睡，适度运动，避免久坐劳累'},
+{n:'肾阴虚证',m:['wx'],s:[['ch',3],['kg',3],['dh',3],['yg',2],['jg',2],['em',2],['yx',2],['sl',2],['s2',3]],f:'枸杞子、桑椹、黑芝麻、银耳、铁皮石斛、蜂蜜',a:'辛辣煎炸、羊肉狗肉、烟酒',l:'避免熬夜，节制房事，宜静养类运动，环境保湿'},
+{n:'肝郁气滞证',m:['qd2'],s:[['xm',3],['aq',3],['jl',3],['tt',2],['sy',2],['fz2',2],['fn',2],['sl',2],['tj',2],['yj',2]],f:'佛手、香橼、陈皮、山楂、玫瑰花、薄荷',a:'过量咖啡浓茶、酒精',l:'规律作息，培养兴趣爱好，通过运动与交流疏泄情绪'},
+{n:'肝火上炎证',m:['fn'],s:[['mr',3],['kk',3],['tt',3],['yt',2],['em',2],['ko',2],['dg',2],['xh',2],['cj',1],['s4',2]],f:'菊花、决明子、淡竹叶、蒲公英、绿豆',a:'辛辣油炸、酒类、羊肉',l:'避免情绪激动，保证睡眠，减少用眼与熬夜'},
+{n:'痰湿内阻证',m:['xt'],s:[['tz',3],['td',3],['fz2',2],['fa',2],['xm',2],['ko',1],['mb2',1],['s3',3]],f:'薏苡仁、赤小豆、茯苓、白扁豆、陈皮、荷叶、冬瓜',a:'甜腻点心、油炸食品、奶油、酒精',l:'增加有氧运动，控制体重，避免久坐，环境通风干燥'},
+{n:'湿热内蕴证',m:['dn','kk'],s:[['ko',3],['mr',2],['yt',2],['xh',2],['tf',1],['s4',3],['bm',1]],f:'薏苡仁、赤小豆、蒲公英、淡竹叶、鱼腥草、绿豆',a:'烧烤辛辣、酒类、动物内脏、甜腻食物',l:'规律运动排汗，注意皮肤与个人卫生，避免熬夜'},
+{n:'血瘀内阻证',m:['gd'],s:[['mh',3],['yb',3],['tt',2],['mb2',2],['tj',2],['yj',2],['xm',1],['s5',3]],f:'山楂、桃仁、玫瑰花、黑木耳、醋',a:'高脂饮食、寒凉收涩之品、烟酒',l:'避免久坐久卧，适度活动促进循环，戒烟'},
+{n:'气血两虚证',m:['fa','mb'],s:[['qd',3],['xj',3],['yun',3],['jw',2],['sl',2],['mg',2],['sy',2],['xs',1],['s1',2]],f:'大枣、桂圆、山药、阿胶、当归、枸杞子',a:'生冷食物、餐时浓茶（影响铁吸收）',l:'循序渐进运动，避免过劳，保证充足睡眠'},
+{n:'肺阴虚证（燥）',m:['yg'],s:[['ks',3],['kg',3],['jg',2],['dh',2],['tf',1],['ch',1],['s2',2]],f:'银耳、百合、桑椹、蜂蜜、雪梨、铁皮石斛',a:'辛辣燥热、烟酒、油炸食品',l:'保持室内湿度，避免粉尘与吸烟，减少用嗓'},
+{n:'心脾两虚证',m:['xj'],s:[['sl',3],['dm',3],['jw',3],['fa',2],['qd',2],['yun',2],['sy',2],['s1',2]],f:'大枣、桂圆、莲子、山药、酸枣仁、茯苓',a:'浓茶咖啡、睡前饮酒',l:'固定作息，睡前1小时减少屏幕使用'},
+{n:'风寒束表证（外感风寒）',m:['ef'],s:[['fr',2],['wh',3],['tt',3],['js',2],['bs',3],['lq',3],['tk',2],['s6',2]],f:'生姜、葱白、紫苏、陈皮、红糖水',a:'生冷瓜果、油腻',l:'注意保暖，多休息，多饮温水'},
+{n:'风热犯表证（外感风热）',m:['yt'],s:[['fr',3],['lh',3],['ks',2],['th',2],['kg',2],['tt',2],['mr',1]],f:'菊花、薄荷、桑叶、金银花、芦根',a:'辛辣煎炸、羊肉、酒类',l:'多饮温水，充分休息，避免再次受凉'},
+{n:'食滞胃脘证',m:['fz2'],s:[['sy',3],['aq',3],['ko',3],['ee',2],['ot',2],['dg',2],['wz',2],['s3',2]],f:'山楂、麦芽、鸡内金、陈皮、白萝卜',a:'油腻食物、夜宵、过量零食',l:'定时定量，晚餐宜早宜少，餐后散步'}];
+
+
+/* ============ 食材库数据（药食同源目录节选） ============ */
+const FOODS={
+'山药':{alias:['淮山','薯蓣'],nature:'平',flavor:'甘',meridian:'脾、肺、肾',effect:'补脾养胃、生津益肺、补肾涩精',evidence:'classical',suitableFor:['气虚质','阳虚质','平和质'],avoidFor:['湿盛中满者','大便燥结者'],taboo:'湿盛中满者慎用',note:'处理时戴手套，黏液可致手痒',dishes:['山药排骨汤','山药小米粥','蓝莓山药'],batch:1,warnLevel:0},
+'薏苡仁':{alias:['薏米','薏仁'],nature:'凉',flavor:'甘淡',meridian:'脾、胃、肺',effect:'利水渗湿、健脾止泻、清热排脓',evidence:'classical',suitableFor:['痰湿质','湿热质','平和质'],avoidFor:['孕妇','津亏便秘者'],taboo:'孕妇慎用',note:'生用偏凉，炒用偏温',dishes:['薏米红豆汤','薏米冬瓜汤','薏米粥'],batch:1,warnLevel:0},
+'生姜':{alias:['老姜','干姜'],nature:'温',flavor:'辛',meridian:'肺、脾、胃',effect:'解表散寒、温中止呕、温肺止咳',evidence:'classical',suitableFor:['阳虚质','气虚质','平和质'],avoidFor:['阴虚火旺者'],taboo:'阴虚火旺者少食',note:'冬吃萝卜夏吃姜，不劳医生开药方',dishes:['姜枣茶','当归生姜羊肉汤','生姜红糖水'],batch:1,warnLevel:0},
+'红枣':{alias:['大枣','红枣'],nature:'温',flavor:'甘',meridian:'脾、胃',effect:'补中益气、养血安神',evidence:'classical',suitableFor:['气虚质','血虚质','平和质'],avoidFor:['湿盛中满者','糖尿病患者'],taboo:'湿盛中满者少食',note:'每日3-5颗为宜，过量易生湿',dishes:['红枣小米粥','红枣银耳羹','姜枣茶'],batch:1,warnLevel:0},
+'枸杞子':{alias:['枸杞'],nature:'平',flavor:'甘',meridian:'肝、肾',effect:'滋补肝肾、益精明目',evidence:'classical',suitableFor:['阴虚质','平和质'],avoidFor:['湿热质','脾虚便溏者'],taboo:'湿热体质及脾虚便溏者慎用',note:'不宜与绿茶同泡',dishes:['枸杞银耳羹','山药枸杞汤'],batch:1,warnLevel:0},
+'百合':{alias:['百合'],nature:'微寒',flavor:'甘',meridian:'心、肺',effect:'养阴润肺、清心安神',evidence:'classical',suitableFor:['阴虚质','平和质'],avoidFor:['阳虚质','风寒咳嗽者'],taboo:'风寒咳嗽及脾胃虚寒者慎用',note:'宜选肉质厚、色白者为佳',dishes:['百合银耳羹','百合莲子粥','清炒百合'],batch:1,warnLevel:0},
+'莲子':{alias:['莲子'],nature:'平',flavor:'甘涩',meridian:'脾、肾、心',effect:'补脾止泻、益肾涩精、养心安神',evidence:'classical',suitableFor:['气虚质','阴虚质','平和质'],avoidFor:['便秘者'],taboo:'便秘者慎用',note:'心偏寒，去心用；实热者宜去心',dishes:['百合莲子粥','莲子银耳羹','莲子排骨汤'],batch:1,warnLevel:0},
+'银耳':{alias:['白木耳','银耳'],nature:'平',flavor:'甘',meridian:'肺、胃、肾',effect:'滋阴润肺、养胃生津',evidence:'classical',suitableFor:['阴虚质','平和质'],avoidFor:['风寒咳嗽者','痰湿壅滞者'],taboo:'风寒咳嗽及痰湿壅滞者慎用',note:'泡发后不宜过夜食用',dishes:['百合银耳羹','银耳红枣汤','银耳枸杞汤'],batch:1,warnLevel:0},
+'黑芝麻':{alias:['胡麻'],nature:'平',flavor:'甘',meridian:'肝、肾、大肠',effect:'补肝肾、益精血、润肠燥',evidence:'classical',suitableFor:['阴虚质','血虚质','平和质'],avoidFor:['脾虚便溏者'],taboo:'脾虚便溏者慎用',note:'需研碎食用利于吸收',dishes:['黑芝麻糊','黑芝麻粥'],batch:1,warnLevel:0},
+'绿豆':{alias:['绿豆'],nature:'寒',flavor:'甘',meridian:'心、胃',effect:'清热消暑、解毒利尿',evidence:'classical',suitableFor:['湿热质','平和质'],avoidFor:['阳虚质','脾胃虚寒者'],taboo:'阳虚体质及脾胃虚寒者慎用',note:'不宜与中药附子同食',dishes:['绿豆薏米汤','绿豆汤'],batch:1,warnLevel:0},
+'冬瓜':{alias:['冬瓜'],nature:'微寒',flavor:'甘淡',meridian:'肺、大肠、小肠、膀胱',effect:'清热利水、消肿解毒',evidence:'classical',suitableFor:['湿热质','痰湿质','平和质'],avoidFor:['阳虚质','脾胃虚寒者'],taboo:'阳虚体质及脾胃虚寒者慎用',note:'连皮煮汤效果更佳',dishes:['薏米冬瓜汤','冬瓜排骨汤'],batch:1,warnLevel:0},
+'白萝卜':{alias:['萝卜'],nature:'凉',flavor:'辛甘',meridian:'肺、胃',effect:'下气消食、化痰清热、利尿解毒',evidence:'classical',suitableFor:['痰湿质','湿热质','平和质'],avoidFor:['气虚质'],taboo:'气虚及脾胃虚寒者慎用',note:'不宜与人参等补气药同食',dishes:['白萝卜排骨汤','萝卜牛腩'],batch:1,warnLevel:0},
+'南瓜':{alias:['南瓜'],nature:'温',flavor:'甘',meridian:'脾、胃',effect:'补中益气、消炎止痛、解毒',evidence:'classical',suitableFor:['气虚质','平和质'],avoidFor:['湿热质','黄疸者'],taboo:'湿热蕴结者慎用',note:'富含胡萝卜素，适量食用',dishes:['南瓜小米粥','南瓜蒸排骨'],batch:1,warnLevel:0},
+'蜂蜜':{alias:['蜂蜜'],nature:'平',flavor:'甘',meridian:'脾、肺、大肠',effect:'补中润燥、止痛解毒',evidence:'classical',suitableFor:['阴虚质','平和质'],avoidFor:['糖尿病患者','1岁以下婴儿'],taboo:'糖尿病患者及1岁以下婴儿禁用',note:'宜用温水冲服，忌高温',dishes:['蜂蜜雪梨','银耳蜂蜜羹'],batch:1,warnLevel:0},
+'桂圆':{alias:['龙眼','桂圆肉'],nature:'温',flavor:'甘',meridian:'心、脾',effect:'补益心脾、养血安神',evidence:'classical',suitableFor:['气虚质','血虚质','平和质'],avoidFor:['阴虚火旺者','湿热质'],taboo:'阴虚火旺及湿热体质者慎用',note:'每日不超过10颗',dishes:['桂圆红枣茶','桂圆莲子粥'],batch:1,warnLevel:0},
+'梨':{alias:['雪梨','鸭梨'],nature:'凉',flavor:'甘微酸',meridian:'肺、胃',effect:'生津润燥、清热化痰',evidence:'classical',suitableFor:['阴虚质','平和质'],avoidFor:['阳虚质','脾胃虚寒者'],taboo:'脾胃虚寒及风寒咳嗽者慎用',note:'生吃清热，蒸熟润燥',dishes:['雪梨炖冰糖','银耳蜂蜜羹'],batch:1,warnLevel:0},
+'赤小豆':{alias:['赤豆','红小豆'],nature:'平',flavor:'酸甘',meridian:'心、小肠',effect:'利水消肿、解毒排脓',evidence:'classical',suitableFor:['湿热质','痰湿质','平和质'],avoidFor:['体虚津亏者'],taboo:'体虚津亏及尿频者慎用',note:'与薏米同煮效果更佳',dishes:['薏米红豆汤','陈皮红豆沙'],batch:1,warnLevel:0},
+'菊花':{alias:['杭菊花','滁菊花'],nature:'微寒',flavor:'辛甘苦',meridian:'肺、肝',effect:'散风清热、平肝明目、清热解毒',evidence:'classical',suitableFor:['湿热质','阴虚质','平和质'],avoidFor:['阳虚质','脾胃虚寒者'],taboo:'阳虚体质及脾胃虚寒者慎用',note:'选杭菊为佳，泡水代茶饮',dishes:['菊花茶','菊花粥'],batch:1,warnLevel:0},
+'薄荷':{alias:['薄荷'],nature:'凉',flavor:'辛',meridian:'肺、肝',effect:'疏散风热、清利头目、利咽透疹',evidence:'classical',suitableFor:['湿热质','平和质'],avoidFor:['阳虚质','阴虚血燥者'],taboo:'体虚多汗及阴虚血燥者慎用',note:'不宜久煎，后下为佳',dishes:['薄荷柠檬水','薄荷茶'],batch:1,warnLevel:0},
+'陈皮':{alias:['橘皮','广陈皮'],nature:'温',flavor:'辛苦',meridian:'脾、肺',effect:'理气健脾、燥湿化痰',evidence:'classical',suitableFor:['痰湿质','气郁质','平和质'],avoidFor:['阴虚燥咳者','气虚者'],taboo:'阴虚燥咳及气虚下陷者慎用',note:'陈久者良，故称陈皮',dishes:['陈皮红豆沙','陈皮普洱茶'],batch:1,warnLevel:0},
+'山楂':{alias:['山楂'],nature:'微温',flavor:'酸甘',meridian:'脾、胃、肝',effect:'消食健胃、行气散瘀、化浊降脂',evidence:'classical',suitableFor:['血瘀质','痰湿质','平和质'],avoidFor:['脾胃虚弱者','孕妇'],taboo:'脾胃虚弱及孕妇慎用',note:'空腹不宜多食',dishes:['山楂红糖水','山楂粥'],batch:1,warnLevel:0},
+'茯苓':{alias:['茯苓'],nature:'平',flavor:'甘淡',meridian:'心、脾、肾',effect:'利水渗湿、健脾宁心',evidence:'classical',suitableFor:['痰湿质','气虚质','平和质'],avoidFor:['肾虚多尿者'],taboo:'肾虚多尿者慎用',note:'宜选白茯苓，健脾效果好',dishes:['茯苓粥','山药茯苓汤'],batch:1,warnLevel:0},
+'桃仁':{alias:['桃仁'],nature:'平',flavor:'甘苦',meridian:'心、肝、大肠',effect:'活血祛瘀、润肠通便',evidence:'classical',suitableFor:['血瘀质','平和质'],avoidFor:['孕妇','便溏者'],taboo:'孕妇及便溏者禁用',note:'不可过量，含苦杏仁苷',dishes:['桃仁粥','山楂桃仁饮'],batch:1,warnLevel:0},
+'花椒':{alias:['花椒'],nature:'温',flavor:'辛',meridian:'脾、胃、肾',effect:'温中止痛、杀虫止痒',evidence:'classical',suitableFor:['阳虚质','平和质'],avoidFor:['阴虚火旺者'],taboo:'阴虚火旺者慎用',note:'作调味用，不宜大量',dishes:['花椒鸡','姜枣茶'],batch:2,warnLevel:1},
+'肉桂':{alias:['肉桂','桂皮'],nature:'大热',flavor:'辛甘',meridian:'肾、脾、心、肝',effect:'补火助阳、散寒止痛、温通经脉',evidence:'classical',suitableFor:['阳虚质','平和质'],avoidFor:['阴虚火旺者','孕妇'],taboo:'阴虚火旺及孕妇慎用',note:'作调味用，不宜过量',dishes:['肉桂苹果','当归生姜羊肉汤'],batch:2,warnLevel:1}
+};
+
+/* ============ 菜谱数据 ============ */
+const DISHES=[
+{id:1,name:'山药排骨汤',template:'汤煲',main:'山药',support:'猪排骨、生姜、枸杞',amount:'山药200g、排骨300g、生姜3片、枸杞10粒',
+steps:['排骨冷水下锅，加姜片料酒焯3分钟，捞出冲净浮沫','山药戴手套去皮切段','砂锅加水1200ml，排骨姜片大火烧开转小火40分钟','下山药再炖20分钟，出锅前5分钟下枸杞，加盐调味'],
+time:'70分钟',difficulty:'简单',season:['autumn','winter'],
+suitableForSymptoms:['乏力','食欲不振','便溏'],suitableForConstitution:['气虚质','阳虚质','平和质'],
+rationale:'山药甘平，补脾养胃、生津益肺；猪排骨甘咸平，滋阴润燥、补中益气。二者相配，补而不燥，适合脾虚食少、体倦乏力者。',
+cautions:'湿盛中满者山药减量；高尿酸者少喝浓汤','evidence':'modern','warnLevel':0},
+{id:2,name:'薏米红豆汤',template:'汤煲',main:'薏苡仁',support:'赤小豆',amount:'薏苡仁50g、赤小豆50g',
+steps:['薏苡仁和赤小豆提前浸泡4小时以上','浸泡后放入锅中，加水约800ml','大火烧开后转小火煮1小时至豆烂','加适量冰糖或红糖调味即可'],
+time:'75分钟',difficulty:'简单',season:['summer','autumn'],
+suitableForSymptoms:['形体肥胖','大便黏滞不爽','浮肿'],suitableForConstitution:['痰湿质','湿热质','平和质'],
+rationale:'薏苡仁利水渗湿、健脾，赤小豆利水消肿、解毒。二者合用，加强祛湿之力，适合痰湿、湿热体质者。',
+cautions:'孕妇慎用薏苡仁；消瘦及尿频者慎用','evidence':'modern','warnLevel':0},
+{id:3,name:'姜枣茶',template:'茶饮',main:'生姜',support:'红枣、红糖',amount:'生姜5片、红枣5颗、红糖适量',
+steps:['红枣去核切片，生姜切丝','将红枣片、生姜丝放入锅中，加水500ml','大火烧开后转小火煮15分钟','加入红糖搅匀，趁热饮用'],
+time:'20分钟',difficulty:'简单',season:['winter','spring'],
+suitableForSymptoms:['怕冷','手足不温','畏寒'],suitableForConstitution:['阳虚质','气虚质','平和质'],
+rationale:'生姜辛温解表散寒、温中止呕；红枣甘温补中益气、养血安神。二者合用，温中散寒、补气血，适合阳虚怕冷者冬季饮用。',
+cautions:'阴虚火旺者、夏季不宜多喝','evidence':'classical','warnLevel':0},
+{id:4,name:'百合银耳羹',template:'粥羹',main:'银耳',support:'百合、枸杞、冰糖',amount:'银耳1朵、百合20g、枸杞10粒、冰糖适量',
+steps:['银耳泡发后撕成小朵，去黄根','百合洗净，与银耳一同放入砂锅','加水800ml，大火烧开转小火炖1小时','加入百合再炖30分钟，最后加枸杞和冰糖调味'],
+time:'120分钟',difficulty:'简单',season:['autumn'],
+suitableForSymptoms:['口干','皮肤干燥','失眠'],suitableForConstitution:['阴虚质','平和质'],
+rationale:'银耳滋阴润肺、养胃生津；百合养阴润肺、清心安神。二者合用，滋阴润燥之力倍增，适合秋燥伤阴及阴虚体质者。',
+cautions:'风寒咳嗽及脾胃虚寒者慎用','evidence':'classical','warnLevel':0},
+{id:5,name:'当归生姜羊肉汤',template:'汤煲',main:'羊肉',support:'当归、生姜',amount:'羊肉500g、当归15g、生姜15g',
+steps:['羊肉切块焯水去腥，捞出洗净','当归洗净切片，生姜切块','将羊肉、当归、生姜放入砂锅，加水1500ml','大火烧开后转小火炖2小时，加盐调味'],
+time:'150分钟',difficulty:'中等',season:['winter'],
+suitableForSymptoms:['畏寒','手足不温','腰膝酸软'],suitableForConstitution:['阳虚质','气血两虚质','平和质'],
+rationale:'出自《金匮要略》，羊肉温补气血、当归补血活血、生姜温中散寒。三者合用，温中补血、散寒止痛，为经典温补方。',
+cautions:'阴虚火旺者、湿热体质者禁用；孕妇慎用当归','evidence':'classical','warnLevel':0},
+{id:6,name:'百合莲子粥',template:'粥羹',main:'莲子',support:'百合、大米',amount:'莲子30g、百合20g、大米50g',
+steps:['莲子去心，百合洗净','大米淘洗干净','将所有材料放入锅中，加水800ml','大火烧开后转小火煮40分钟至粥稠'],
+time:'50分钟',difficulty:'简单',season:['summer','autumn'],
+suitableForSymptoms:['失眠','多梦易醒','心悸'],suitableForConstitution:['心脾两虚质','阴虚质','平和质'],
+rationale:'莲子补脾止泻、益肾涩精、养心安神；百合养阴润肺、清心安神。二者合用，养心安神效果好，适合失眠多梦者。',
+cautions:'便秘者慎用','evidence':'modern','warnLevel':0},
+{id:7,name:'绿豆薏米汤',template:'汤煲',main:'绿豆',support:'薏苡仁',amount:'绿豆50g、薏苡仁50g',
+steps:['绿豆和薏苡仁提前浸泡4小时','浸泡后放入锅中，加水1000ml','大火烧开后转小火煮1小时','加适量冰糖或待其自然冷却饮用'],
+time:'70分钟',difficulty:'简单',season:['summer'],
+suitableForSymptoms:['口苦','面部油腻','痤疮'],suitableForConstitution:['湿热质','平和质'],
+rationale:'绿豆清热消暑、解毒；薏苡仁利水渗湿、健脾。二者合用，清热利湿效果好，适合夏季湿热困阻者。',
+cautions:'阳虚体质及脾胃虚寒者慎用','evidence':'modern','warnLevel':0},
+{id:8,name:'红枣小米粥',template:'粥羹',main:'红枣',support:'小米',amount:'红枣5颗、小米50g',
+steps:['小米淘洗干净，红枣去核切粒','锅中加水800ml，大火烧开','加入小米和红枣粒','转小火煮30分钟至粥稠，加冰糖调味'],
+time:'40分钟',difficulty:'简单',season:['all'],
+suitableForSymptoms:['乏力','食欲减退','失眠'],suitableForConstitution:['气虚质','血虚质','平和质'],
+rationale:'小米健脾和胃、补益虚损；红枣补中益气、养血安神。二者合用，健脾养血安神，适合气血不足、睡眠不佳者。',
+cautions:'湿盛中满者少食','evidence':'modern','warnLevel':0},
+{id:9,name:'山楂红糖水',template:'茶饮',main:'山楂',support:'红糖',amount:'山楂干15g、红糖适量',
+steps:['山楂干洗净，放入杯中','冲入沸水500ml，加盖焖10分钟','加入红糖搅匀','趁热饮用'],
+time:'15分钟',difficulty:'简单',season:['all'],
+suitableForSymptoms:['食欲不振','面色晦暗','痛经'],suitableForConstitution:['血瘀质','痰湿质','平和质'],
+rationale:'山楂消食健胃、行气散瘀、化浊降脂；红糖温中补血、缓痛。二者合用，活血化瘀、温经止痛，适合血瘀体质及女性痛经者。',
+cautions:'脾胃虚弱及孕妇慎用','evidence':'modern','warnLevel':0},
+{id:10,name:'枸杞银耳羹',template:'粥羹',main:'枸杞子',support:'银耳、冰糖',amount:'枸杞子15g、银耳1朵、冰糖适量',
+steps:['银耳泡发撕小朵，加水800ml炖1小时至胶质析出','加入枸杞子再炖10分钟','加冰糖调味即可'],
+time:'75分钟',difficulty:'简单',season:['autumn','winter'],
+suitableForSymptoms:['眼干涩','口干','腰膝酸软'],suitableForConstitution:['阴虚质','平和质'],
+rationale:'枸杞子滋补肝肾、益精明目；银耳滋阴润肺、养胃生津。二者合用，滋补肝肾、滋阴明目，适合肝肾阴虚、眼干涩者。',
+cautions:'湿热体质及脾虚便溏者慎用','evidence':'modern','warnLevel':0},
+{id:11,name:'陈皮红豆沙',template:'粥羹',main:'陈皮',support:'赤小豆',amount:'陈皮10g、赤小豆80g',
+steps:['赤小豆提前浸泡6小时以上','陈皮泡软刮去内囊白膜，切丝','将赤小豆和陈皮丝放入锅中，加水1000ml','大火烧开后转小火煮1.5小时至豆烂','加红糖或冰糖调味，可压成豆沙'],
+time:'100分钟',difficulty:'简单',season:['autumn'],
+suitableForSymptoms:['形体肥胖','大便黏滞','胸闷'],suitableForConstitution:['痰湿质','湿热质','平和质'],
+rationale:'陈皮理气健脾、燥湿化痰；赤小豆利水消肿、解毒。二者合用，理气祛湿、健脾消肿，适合痰湿体质者。',
+cautions:'阴虚燥咳者慎用','evidence':'modern','warnLevel':0},
+{id:12,name:'黑芝麻糊',template:'粥羹',main:'黑芝麻',support:'大米、冰糖',amount:'黑芝麻50g、大米30g、冰糖适量',
+steps:['黑芝麻洗净炒香（或买现成熟芝麻）','大米淘洗浸泡2小时','将黑芝麻和大米放入破壁机，加水600ml','选择米糊模式煮熟，加冰糖调味'],
+time:'30分钟',difficulty:'简单',season:['all'],
+suitableForSymptoms:['腰膝酸软','脱发','便秘'],suitableForConstitution:['阴虚质','血虚质','平和质'],
+rationale:'黑芝麻补肝肾、益精血、润肠燥；大米补中益气。二者合用，滋补肝肾、润肠通便，适合肝肾不足、肠燥便秘者。',
+cautions:'脾虚便溏者慎用','evidence':'modern','warnLevel':0},
+{id:13,name:'南瓜小米粥',template:'粥羹',main:'南瓜',support:'小米',amount:'南瓜200g、小米50g',
+steps:['南瓜去皮去瓤切小块','小米淘洗干净','锅中加水800ml，放入小米和南瓜块','大火烧开后转小火煮30分钟至南瓜烂熟、粥稠'],
+time:'40分钟',difficulty:'简单',season:['all'],
+suitableForSymptoms:['乏力','食欲不振','面色苍白'],suitableForConstitution:['气虚质','平和质'],
+rationale:'南瓜补中益气、消炎止痛；小米健脾和胃。二者合用，补中益气、健脾和胃，适合脾胃虚弱、食欲不振者。',
+cautions:'湿热蕴结者慎用','evidence':'modern','warnLevel':0},
+{id:14,name:'菊花茶',template:'茶饮',main:'菊花',support:'枸杞、冰糖',amount:'菊花5g、枸杞5g、冰糖适量',
+steps:['菊花和枸杞放入杯中','冲入沸水500ml','加盖焖5分钟','加冰糖调味，代茶饮'],
+time:'10分钟',difficulty:'简单',season:['summer','spring'],
+suitableForSymptoms:['目赤肿痛','头痛眩晕','烦躁易怒'],suitableForConstitution:['肝火上炎质','湿热质','平和质'],
+rationale:'菊花散风清热、平肝明目；枸杞滋补肝肾、益精明目。二者合用，清肝明目、滋补肝肾，适合肝火上炎、目赤肿痛者。',
+cautions:'阳虚体质及脾胃虚寒者慎用','evidence':'classical','warnLevel':0},
+{id:15,name:'萝卜牛腩',template:'汤煲',main:'白萝卜',support:'牛腩、生姜',amount:'白萝卜300g、牛腩300g、生姜5片',
+steps:['牛腩切块焯水去腥，捞出洗净','萝卜去皮切滚刀块','砂锅中放入牛腩、生姜，加水1500ml','大火烧开后转小火炖1小时，加萝卜再炖40分钟','加盐调味'],
+time:'100分钟',difficulty:'中等',season:['winter'],
+suitableForSymptoms:['食欲不振','食后腹胀','气短'],suitableForConstitution:['气虚质','平和质'],
+rationale:'白萝卜下气消食、化痰清热；牛腩补中益气、健脾养胃。二者合用，补而不滞，消补兼施，适合脾胃虚弱兼有食滞者。',
+cautions:'气虚及脾胃虚寒者白萝卜减量','evidence':'modern','warnLevel':0}
+];
+
+
+/* ============ 体质测评（改进：一题一页） ============ */
+let consCur=0;
+let consAnswers={}; // 存储已选答案
+function renderConsQ(){
+  const q=Q[consCur];
+  document.getElementById('qCounter').textContent='第 '+(consCur+1)+' / '+Q.length+' 题';
+  // 从存储中恢复已选答案
+  const savedVal=consAnswers[q[0]];
+  document.getElementById('qContent').innerHTML=
+    '<div class="qt">'+(consCur+1)+'. '+q[2]+'</div>'+
+    '<div class="op">'+[1,2,3,4,5].map(n=>
+      '<label class="'+(savedVal==n?'selected':'')+'">'+
+      '<input type="radio" name="q'+q[0]+'" value="'+n+'" onchange="saveConsAns(this,'+q[0]+')">'+LBL[n]+
+      '</label>'
+    ).join('')+'</div>';
+  document.getElementById('consPrev').disabled=consCur===0;
+  document.getElementById('consNext').textContent=consCur===Q.length-1?'提交结果':'下一题';
+}
+function saveConsAns(el,qnum){
+  consAnswers[qnum]=parseInt(el.value);
+  document.querySelectorAll('#qContent .op label').forEach(l=>l.classList.remove('selected'));
+  el.parentElement.classList.add('selected');
+}
+function consNext(){
+  const q=Q[consCur];
+  if(!document.querySelector('input[name="q'+q[0]+'"]:checked')){
+    alert('请选择一个答案');return;
+  }
+  if(consCur<Q.length-1){consCur++;renderConsQ()}
+  else{calcCons();go('cons')}
+}
+function consPrev(){if(consCur>0){consCur--;renderConsQ()}}
+
+/* ============ 症状自查（改进：一分类一页+即时反馈） ============ */
+let sympCurCat=0;
+let sympStage=0; // 0=危险信号 1=分组勾选 2=结果
+let sympState={rf:[],cats:[],curCatAns:{}};
+
+function syncSympView(){
+  if(!document.getElementById('rfbox').innerHTML) renderRf();
+  document.getElementById('sympDangerArea').style.display=sympStage===0?'block':'none';
+  document.getElementById('sympCatArea').style.display=sympStage===1?'block':'none';
+  document.getElementById('sympResultArea').style.display=sympStage===2?'block':'none';
+}
+function restartSymp(){
+  sympStage=(sympState.cats&&sympState.cats.length)?1:0;
+  document.getElementById('sympResultArea').innerHTML='';
+  if(sympStage===1) renderSympCat();
+  go('symp');
+}
+
+function renderRf(){
+  document.getElementById('rfbox').innerHTML=RF.map((r,i)=>
+    '<span class="tag danger" data-rf="'+i+'" onclick="tg(this);toggleRf(this)">'+r[0]+'</span>'
+  ).join('');
+}
+function toggleRf(el){
+  // 勾选危险信号时提醒
+  if(el.classList.contains('on')){
+    setTimeout(()=>alert('您勾选了危险信号项。如确有不适，请立即就医或拨打120，不要依赖本系统进行养生参考。'),100);
+  }
+}
+function startSympCategories(){
+  // 检查危险信号
+  const rfOn=[...document.querySelectorAll('#rfbox .tag.on')].map(e=>e.dataset.rf);
+  if(rfOn.length>0){
+    if(!confirm('您已勾选危险信号项。如确有不适请立即就医。继续自查仅作为参考，是否继续？'))return;
+  }
+  sympCurCat=0;
+  sympStage=1;
+  sympState={rf:rfOn,cats:JSON.parse(JSON.stringify(GRP)),curCatAns:{}};
+  document.getElementById('sympResultArea').innerHTML='';
+  document.getElementById('sympDangerArea').style.display='none';
+  document.getElementById('sympCatArea').style.display='block';
+  document.getElementById('sympResultArea').style.display='none';
+  renderSympCat();
+}
+function renderSympCat(){
+  const cat=sympState.cats[sympCurCat];
+  document.getElementById('sympCounter').textContent='第 '+(sympCurCat+1)+' / '+sympState.cats.length+' 组';
+  document.getElementById('sympCatTitle').textContent=cat[0];
+  document.getElementById('sympCatContent').innerHTML=
+    '<div class="grp">'+cat[1].map(k=>
+      '<span class="tag" data-k="'+k+'" onclick="tg(this);sympFeedback()">'+SYM[k]+'</span>'
+    ).join('')+'</div>';
+  // 恢复已选项
+  if(sympState.curCatAns[sympCurCat]){
+    sympState.curCatAns[sympCurCat].forEach(k=>{
+      const el=document.querySelector('#sympCatContent .tag[data-k="'+k+'"]');
+      if(el)el.classList.add('on');
+    });
+  }
+  document.getElementById('sympCatFeedback').style.display='none';
+  document.getElementById('sympPrev').disabled=sympCurCat===0;
+  document.getElementById('sympNext').textContent=sympCurCat===sympState.cats.length-1?'生成参考结果':'下一组';
+}
+function sympFeedback(){
+  // 实时反馈：根据当前组已选症状给出即时提示
+  const selected=[...document.querySelectorAll('#sympCatContent .tag.on')].map(e=>e.dataset.k);
+  if(selected.length===0){
+    document.getElementById('sympCatFeedback').style.display='none';return;
+  }
+  // 查找匹配的症状名
+  const selNames=selected.map(k=>SYM[k]).join('、');
+  const seasonTip=getSeasonTip();
+  // 根据症状关键词给个性化反馈
+  let personalTip='';
+  const symptomMap={
+    '咳嗽':['ks'],'怕冷':['wh'],'乏力':['fa'],'口干':['kg'],'失眠':['sl'],
+    '头痛':['tt'],'腹泻':['fx'],'便秘':['bm'],'头晕':['yun'],'胸闷':['xm'],
+    '心悸':['xj'],'腰酸':['yx'],'月经不调':['yj'],'焦虑':['jl'],'烦躁':['fn']
+  };
+  for(const[name,keys] of Object.entries(symptomMap)){
+    if(selected.some(k=>keys.includes(k))){
+      personalTip=getSeasonFoodTip(name);break;
+    }
+  }
+  let html='<b>当前组已选：'+selNames+'</b><br>';
+  if(personalTip) html+='<br>'+personalTip;
+  html+='<br><span class="small">提示：勾选越多症状，后续匹配结果越准确。也可继续勾选其他组的症状。</span>';
+  document.getElementById('sympCatFeedback').innerHTML=html;
+  document.getElementById('sympCatFeedback').style.display='block';
+}
+function sympNext(){
+  // 保存当前组答案
+  sympState.curCatAns[sympCurCat]=[...document.querySelectorAll('#sympCatContent .tag.on')].map(e=>e.dataset.k);
+  if(sympCurCat<sympState.cats.length-1){
+    sympCurCat++;renderSympCat();
+  }else{
+    sympStage=2;
+    calcSynd();go('symp');
+    document.getElementById('sympCatArea').style.display='none';
+    document.getElementById('sympResultArea').style.display='block';
+  }
+}
+function sympPrev(){
+  sympState.curCatAns[sympCurCat]=[...document.querySelectorAll('#sympCatContent .tag.on')].map(e=>e.dataset.k);
+  if(sympCurCat>0){sympCurCat--;renderSympCat()}
+}
+
+/* ============ 证候计算（复用原有逻辑+食材联动） ============ */
+function calcSynd(){
+  // 收集所有已选症状
+  const allSelected=[];
+  Object.values(sympState.curCatAns).forEach(arr=>allSelected.push(...arr));
+  // 加上危险信号
+  const rf=[...document.querySelectorAll('#rfbox .tag.on')].map(e=>RF.find(r=>r[0]===e.textContent)).filter(Boolean);
+
+  let h='';
+  if(rf.length){
+    h+=`<div class="card"><h2>请优先就医</h2>
+    <div class="warn">您勾选了以下需要尽快医疗评估的情况：<ul>${rf.map(r=>'<li><b>'+esc(r[0])+'</b>——'+esc(r[1])+'</li>').join('')}</ul>请立即前往医院就诊，紧急情况拨打120。</div><div class="noprint" style="margin-top:12px"><button class="btn sec" onclick="restartSymp()">返回修改</button></div></div>`;
+    document.getElementById('sympResultArea').innerHTML=h;
+    save('症状自查','触发危险信号',h);return;
+  }
+  if(allSelected.length<3){
+    h=`<div class="card"><h2>信息不足</h2><p>您勾选的症状较少（${allSelected.length}项），不足以给出可靠参考。建议补充勾选，或直接到中医科面诊。</p><div class="noprint" style="margin-top:12px"><button class="btn" onclick="restartSymp()">返回补充勾选</button></div></div>`;
+    document.getElementById('sympResultArea').innerHTML=h;return;
+  }
+
+  // 计算证候匹配
+  const rs=SYND.map(s=>{
+    const hitM=s.m.filter(k=>allSelected.includes(k)).length;
+    let hit=0,tot=0;s.s.forEach(x=>{tot+=x[1];if(allSelected.includes(x[0]))hit+=x[1]});
+    const sc=tot?Math.round(hit/tot*100):0;
+    return{n:s.n,ok:hitM>0,sc,det:s.s.filter(x=>allSelected.includes(x[0])).map(x=>SYM[x[0]]+'('+x[1]+')'),f:s.f,a:s.a,l:s.l}})
+    .filter(r=>r.ok).sort((a,b)=>b.sc-a.sc).slice(0,3);
+
+  if(!rs.length){
+    h=`<div class="card"><h2>未匹配到常见证候</h2><p>您勾选的表现未构成某一常见证候的典型组合。这不代表没有问题，建议到中医科面诊。</p></div>`;
+  }else{
+    h=`<div class="card"><h2>证候倾向参考（按匹配度排序）</h2>`;
+    rs.forEach((r,i)=>{
+      const cf=r.sc>=60?'较高':(r.sc>=40?'中等':'偏低');
+      h+=`<h3>${i+1}. ${r.n} —— 匹配度 ${r.sc} 分（置信度：${cf}）</h3>
+      <p><b>判定依据：</b>${r.det.join('、')}</p>
+      <p><b>宜食食材：</b>${r.f}</p>
+      <p><b>慎食：</b>${r.a}</p>
+      <p><b>起居建议：</b>${r.l}</p>`;
+      // 关联食材快捷链接
+      const foodLinks=r.f.split('、').filter(f=>FOODS[f]).map(f=>
+        '<span class="tag" style="cursor:pointer" onclick="showFoodDetail(\''+f+'\')">'+f+'</span>'
+      ).join(' ');
+      if(foodLinks) h+='<p style="margin-top:6px"><b>点击食材查看详情与菜谱：</b>'+foodLinks+'</p>';
+    });
+    h+=`<div class="tip"><b>如何理解这个结果：</b>本结果为"规则加权匹配"，根据您勾选的症状与中医常见证候要素的重合程度计算，<b>不是诊断</b>。中医强调四诊合参，若症状持续超过2周或加重，请及时就医。</div>`;
+    // 季节提示
+    h+=`<div class="feedback" style="margin-top:12px"><b>季节提示（${getSeason()}季）：</b>${getSeasonTip()}</div>`;
+    h+=`<div class="noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">打印 / 保存PDF</button><button class="btn sec" onclick="restartSymp()">返回修改勾选</button></div></div>`;
+  }
+  document.getElementById('sympResultArea').innerHTML=h;
+  save('症状自查',rs.length?rs[0].n:'未匹配',h);
+}
+
+/* ============ 体质测评提交 ============ */
+function calcCons(){
+  // 检查是否全部作答
+  let miss=0;
+  Q.forEach(q=>{if(!consAnswers[q[0]])miss++});
+  if(miss){alert('还有 '+miss+' 题未作答，请完成全部条目');return}
+  const raw={};Q.forEach(q=>raw[q[1]]=0);
+  Q.forEach(q=>{const n=consAnswers[q[0]];if(!n)return;let val=n;if(q[3])val=6-val;raw[q[1]]+=val});
+  const tr={};Object.keys(raw).forEach(k=>tr[k]=Math.round((raw[k]-3)/12*100));
+  const res={};Object.keys(C).forEach(k=>{
+    if(k==='P'){const o=Object.keys(tr).filter(x=>x!=='P');
+      res[k]=tr.P>=60&&o.every(x=>tr[x]<30)?'是':(tr.P>=60&&o.every(x=>tr[x]<40)?'基本是':'否')}
+    else res[k]=tr[k]>=40?'是':(tr[k]>=30?'倾向是':'否')});
+  let main='平和质',ms=-1;Object.keys(tr).forEach(k=>{if(k!=='P'&&(res[k]==='是'||res[k]==='倾向是')&&tr[k]>ms){ms=tr[k];main=C[k][0]}});
+  if(res.P==='是'||res.P==='基本是')main='平和质';
+  let h=`<div class="card"><h2>体质辨识结果</h2><p>主导体质：<b style="color:var(--acc);font-size:18px">${main}</b></p>`;
+  Object.keys(C).forEach(k=>{h+=`<div class="row"><span>${C[k][0]}（${C[k][1]}）</span><span>转化分 ${tr[k]} · 判定：${res[k]}</span></div><div class="bar"><i style="width:${Math.max(2,tr[k])}%"></i></div>`});
+  h+=`<h3>调理建议</h3>`;const key=Object.keys(C).find(k=>C[k][0]===main)||'P';const d=CD[key];
+  h+=`<p><b>宜食：</b>${d.y}</p><p><b>忌食：</b>${d.j}</p><p><b>起居：</b>${d.l}</p><p><b>情志：</b>${d.e}</p>`;
+  // 关联食材链接
+  const foodLinks=d.y.split('、').filter(f=>FOODS[f]).map(f=>
+    '<span class="tag" style="cursor:pointer" onclick="showFoodDetail(\''+f+'\')">'+f+'</span>'
+  ).join(' ');
+  if(foodLinks) h+='<p style="margin-top:6px"><b>点击食材查看详情与菜谱：</b>'+foodLinks+'</p>';
+  h+=`<div class="tip">说明：转化分≥40判为"是"，30-39为"倾向是"。体质可随年龄、季节与生活方式变化，建议每6-12个月复测。本结果不构成诊断。</div>`;
+  h+=`<div class="noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">打印 / 保存PDF</button><button class="btn sec" onclick="typeof restartCons==='function'&&restartCons()">重新测评</button></div></div>`;
+  document.getElementById('consResult').innerHTML=h;
+  document.getElementById('consQuizArea').style.display='none';
+  save('体质辨识',main,h);
+}
+function restartCons(){
+  consCur=0;consAnswers={};
+  document.getElementById('consResult').innerHTML='';
+  document.getElementById('consQuizArea').style.display='block';
+  renderConsQ();go('cons');
+}
+
+
+/* ============ 食材库 ============ */
+function renderFoods(list){
+  const data=list||Object.entries(FOODS);
+  document.getElementById('foodList').innerHTML=data.map(([name,f])=>{
+    const dishCount=f.dishes?f.dishes.length:0;
+    return `<div class="food-card" onclick="showFoodDetail('${name}')">
+      <h4>${name} ${f.batch===2?'<span class="small">[第二批·仅限香辛料]</span>':''} ${f.batch===3?'<span class="small">[第三批]</span>':''} ${f.batch===4?'<span class="small">[第四批]</span>':''}</h4>
+      <div class="meta">${f.nature}·${f.flavor} | ${f.meridian}</div>
+      <div>${f.effect}</div>
+      ${dishCount?'<div class="small" style="margin-top:4px;color:var(--pri)">关联菜谱 '+dishCount+' 道 →</div>':''}
+    </div>`;
+  }).join('');
+}
+function filterFoods(){
+  const q=document.getElementById('foodSearch').value.trim().toLowerCase();
+  if(!q){renderFoods();return}
+  const filtered=Object.entries(FOODS).filter(([name,f])=>
+    name.toLowerCase().includes(q)||
+    f.effect.toLowerCase().includes(q)||
+    f.nature.toLowerCase().includes(q)||
+    f.flavor.toLowerCase().includes(q)||
+    f.meridian.toLowerCase().includes(q)||
+    (f.alias&&f.alias.some(a=>a.toLowerCase().includes(q)))||
+    (f.suitableFor&&f.suitableFor.some(s=>s.toLowerCase().includes(q)))
+  );
+  renderFoods(filtered);
+}
+function showFoodDetail(name){
+  const f=FOODS[name];
+  if(!f){alert('食材数据未找到');return}
+  document.getElementById('fdBread').textContent=name;
+  const dishList=f.dishes?f.dishes.map(d=>{
+    const dObj=DISHES.find(x=>x.name===d);
+    return dObj?`<span class="tag" style="cursor:pointer" onclick="event.stopPropagation();showDishDetail(${dObj.id})">${d}</span>`:`<span class="tag">${d}</span>`;
+  }).join(' '):'<span class="small">暂无关联菜谱</span>';
+  const suitTags=f.suitableFor.map(s=>'<span class="tag" style="background:#eef5f0;border-color:#cfe0d5">'+s+'</span>').join(' ');
+  const avoidTags=f.avoidFor?f.avoidFor.map(s=>'<span class="tag" style="background:#fdecea;border-color:#f5c6cb;color:#8a2b16">'+s+'</span>').join(' '):'';
+  let warnHtml='';
+  if(f.warnLevel===2) warnHtml='<div class="warn"><b>【特殊人群警示】</b>本品种有特殊人群食用限制，请仔细阅读禁忌说明。</div>';
+  if(f.warnLevel===1) warnHtml='<div class="tip" style="background:#fff8e1;border-color:#ffecb3"><b>【使用注意】</b>本品种有特殊使用限制，请遵医嘱或说明书使用。</div>';
+  document.getElementById('foodDetail').innerHTML=`
+    <div class="card">
+      <h2>${name}</h2>
+      ${warnHtml}
+      <div class="row"><span><b>性味：</b>${f.nature} · ${f.flavor}</span><span><b>归经：</b>${f.meridian}</span></div>
+      <h3>功效</h3><p>${f.effect}</p>
+      <h3>适用体质</h3><p>${suitTags}</p>
+      ${avoidTags?'<h3>慎用于</h3><p>'+avoidTags+'</p>':''}
+      <h3>禁忌</h3><p>${f.taboo||'暂无'}</p>
+      <h3>小贴士</h3><p>${f.note||'暂无'}</p>
+      <h3>关联菜谱（点击查看详情）</h3><p>${dishList}</p>
+      <div class="small" style="margin-top:8px">证据等级：${f.evidence==='classical'?'古籍经典':f.evidence==='both'?'经典+现代':'现代归纳'} | 批次：第${f.batch||'1'}批</div>
+    </div>
+  `;
+  go('food-detail');
+}
+
+/* ============ 菜谱库 ============ */
+let currentDishFilter='all';
+function renderDishes(list){
+  const data=list||DISHES;
+  document.getElementById('dishList').innerHTML=data.length?data.map(d=>{
+    const seasonTag={spring:'春',summer:'夏',autumn:'秋',winter:'冬',all:'四季'}[d.season?.[0]||'all'];
+    const suitTags=d.suitableForSymptoms?.slice(0,3).map(s=>'<span class="tag" style="font-size:12px;padding:2px 8px">'+s+'</span>').join(' ')||'';
+    return `<div class="dish-card" onclick="showDishDetail(${d.id})">
+      <h4>${d.name} ${d.evidence==='classical'?'<span class="small">[经典方]</span>':''} ${d.warnLevel===2?'<span class="small warn">[特殊警示]</span>':''}</h4>
+      <div class="meta">${d.template} · ${d.time} · ${d.difficulty} · ${d.season?.join('/')||'四季'} ${seasonTag}</div>
+      <div style="margin-top:4px">适合：${suitTags}${d.suitableForSymptoms?.length>3?'...':''}</div>
+      <div class="small" style="margin-top:4px">主料：${d.main} | 辅料：${d.support}</div>
+    </div>`;
+  }).join(''):'<p class="small">暂无菜谱</p>';
+}
+function filterDishes(){
+  const q=document.getElementById('dishSearch').value.trim().toLowerCase();
+  let data=DISHES;
+  if(currentDishFilter!=='all') data=data.filter(d=>d.template===currentDishFilter);
+  if(q) data=data.filter(d=>
+    d.name.toLowerCase().includes(q)||
+    d.main.toLowerCase().includes(q)||
+    d.support.toLowerCase().includes(q)||
+    d.suitableForSymptoms?.some(s=>s.toLowerCase().includes(q))
+  );
+  renderDishes(data);
+}
+function filterDishByType(type){
+  currentDishFilter=type;
+  filterDishes();
+}
+function showDishDetail(id){
+  const d=DISHES.find(x=>x.id===id);
+  if(!d){alert('菜谱未找到');return}
+  document.getElementById('ddBread').textContent=d.name;
+  // 食材可点击跳转
+  const mainFood=FOODS[d.main]?'<span class="tag" style="cursor:pointer" onclick="showFoodDetail(\''+d.main+'\')">'+d.main+'</span>':'<span class="tag">'+d.main+'</span>';
+  const supportFoods=d.support.split('、').map(s=>{
+    const trimmed=s.trim();
+    const f=FOODS[trimmed];
+    return f?'<span class="tag" style="cursor:pointer" onclick="showFoodDetail(\''+trimmed+'\')">'+trimmed+'</span>':'<span class="tag">'+trimmed+'</span>';
+  }).join('、');
+  const suitSymptoms=d.suitableForSymptoms?.map(s=>'<span class="tag" style="background:#eef5f0;border-color:#cfe0d5">'+s+'</span>').join(' ')||'';
+  const suitConst=d.suitableForConstitution?.map(c=>'<span class="tag" style="background:#eef5f0;border-color:#cfe0d5">'+c+'</span>').join(' ')||'';
+  let warnHtml='';
+  if(d.warnLevel===2) warnHtml='<div class="warn"><b>【特殊人群警示】</b>本菜品含特殊药食同源物质，孕妇、哺乳期妇女及婴幼儿等特殊人群请遵医嘱食用。</div>';
+  const stepsHtml=d.steps?.map((s,i)=>'<div class="step" data-n="'+(i+1)+'">'+s+'</div>').join('')||'';
+  document.getElementById('dishDetail').innerHTML=`
+    <div class="card">
+      <h2>${d.name} ${d.evidence==='classical'?'<span class="small">[经典方]</span>':''}</h2>
+      ${warnHtml}
+      <div class="row">
+        <span><b>类别：</b>${d.template}</span>
+        <span><b>时长：</b>${d.time}</span>
+        <span><b>难度：</b>${d.difficulty}</span>
+      </div>
+      <h3>食材</h3>
+      <p><b>主料：</b>${mainFood}</p>
+      <p><b>辅料：</b>${supportFoods}</p>
+      <p class="small">（点击食材名称可查看该食材详情与关联菜谱）</p>
+      <h3>做法步骤</h3>
+      ${stepsHtml}
+      <h3>适合不适</h3>
+      <p>${suitSymptoms||'暂无'}</p>
+      <h3>适合体质</h3>
+      <p>${suitConst||'暂无'}</p>
+      <h3>配伍意义</h3>
+      <p>${d.rationale||'暂无'}</p>
+      <h3>注意事项</h3>
+      <p>${d.cautions||'暂无'}</p>
+      <div class="small" style="margin-top:8px">证据等级：${d.evidence==='classical'?'古籍经典':d.evidence==='both'?'经典+现代':'现代归纳'}</div>
+    </div>
+  `;
+  go('dish-detail');
+}
+
+/* ============ 历史记录 ============ */
+function save(t,sub,html){
+  const a=JSON.parse(localStorage.getItem('qhhj')||'[]');
+  a.unshift({t,sub,html,d:new Date().toLocaleString('zh-CN')});
+  localStorage.setItem('qhhj',JSON.stringify(a.slice(0,20)));
+  renderHist();
+}
+function renderHist(){
+  const a=JSON.parse(localStorage.getItem('qhhj')||'[]');
+  document.getElementById('hlist').innerHTML=a.length?a.map((x,i)=>
+    '<div class="card" style="padding:12px"><b>'+esc(x.d)+' · '+esc(x.t)+' · '+esc(x.sub)+'</b>'+
+    '<button class="btn sec" style="font-size:12px;padding:4px 10px" onclick="viewHist('+i+')">查看</button>'+
+    '<button class="btn sec" style="font-size:12px;padding:4px 10px;background:#fff;color:var(--warn);border-color:var(--warn)" onclick="delHist('+i+')">删除</button>'+
+    '</div>'
+  ).join(''):'<p class="small">暂无记录</p>';
+}
+function viewHist(i){
+  const a=JSON.parse(localStorage.getItem('qhhj')||'[]');
+  if(a[i]){
+    // 在新窗口打开历史记录详情
+    const w=window.open('','_blank');
+    if(!w){alert('浏览器拦截了新窗口，请允许本站弹出窗口后重试');return}
+    w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>历史记录</title><style>body{font-family:sans-serif;padding:20px;max-width:800px;margin:0 auto}h2{color:#3d6b52}h3{color:#b0492e}.card{border:1px solid #e2d9c6;border-radius:12px;padding:18px;margin-bottom:14px}.tip{background:#eef5f0;border:1px solid #cfe0d5;border-radius:10px;padding:12px}</style></head><body>'+a[i].html+'</body></html>');
+    w.document.close();
+  }
+}
+function delHist(i){
+  if(!confirm('确定删除此记录？'))return;
+  const a=JSON.parse(localStorage.getItem('qhhj')||'[]');
+  a.splice(i,1);localStorage.setItem('qhhj',JSON.stringify(a));renderHist();
+}
+
+/* ============ 初始化 ============ */
+// 初始化体质测评第一题
+consCur=0;
+renderConsQ();
+// 初始化症状危险信号
+renderRf();
+// 检查弹窗
+if(localStorage.getItem('qhhj_ok'))document.getElementById('mask').style.display='none';
+// 默认首页
+go('home');
+</script>
+</body>
+</html>
